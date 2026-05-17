@@ -13,7 +13,7 @@
             box-sizing: border-box;
         }
 
-        /* Canvas de partículas de fondo (más sutil) */
+        /* Canvas de partículas de fondo (muy sutil) */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -28,26 +28,22 @@
             font-family: 'Inter', sans-serif;
             padding: 2rem 1.5rem;
             min-height: 100vh;
-            perspective: 1200px;
         }
 
-        /* Contenedor principal con efecto 3D tilt */
+        /* Contenedor principal sin efecto tilt */
         .glass-card {
             max-width: 1200px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(2px);
             border-radius: 2rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            transform-style: preserve-3d;
-            transform: rotateX(0deg) rotateY(0deg);
-            will-change: transform;
+            transition: box-shadow 0.3s ease;
         }
 
         .glass-card:hover {
-            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.3);
         }
 
         .header {
@@ -155,6 +151,7 @@
             margin: 0.5rem 0;
         }
 
+        /* Formulario grid */
         .form-grid {
             padding: 1.5rem 2rem 0.5rem;
             display: grid;
@@ -162,12 +159,12 @@
             gap: 1.2rem 1.8rem;
         }
 
-        /* Sin animación de entrada, solo transiciones suaves en hover/focus */
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
             position: relative;
+            transition: all 0.2s;
         }
 
         .label-wrapper {
@@ -244,22 +241,22 @@
             outline: none;
         }
 
-        /* Efecto glow al focus */
+        /* Efecto glow al focus (sin transformación grande) */
         .input-group input:focus,
         .input-group select:focus {
             border-color: #2d6a4f;
-            box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2), 0 0 8px 2px rgba(45, 106, 79, 0.3);
-            transform: scale(1.02);
+            box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2), 0 0 8px 2px rgba(45, 106, 79, 0.2);
+            transform: scale(1.01);
         }
 
-        /* Botones con ripple y 3D */
+        /* Botones con ripple */
         .btn-modern {
             background: linear-gradient(95deg, #14532d, #1f7a46);
             border: none;
             color: white;
             font-weight: 700;
-            font-size: 1.1rem;
-            padding: 0.9rem;
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 2rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -268,12 +265,10 @@
             justify-content: center;
             gap: 0.8rem;
             letter-spacing: 0.5px;
-            margin: 0.5rem 1rem;
-            width: calc(50% - 2rem);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin: 0.5rem 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
-            transform: translateY(0);
         }
 
         .btn-modern .ripple {
@@ -307,24 +302,24 @@
             left: 100%;
         }
         .btn-modern:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
             background: linear-gradient(95deg, #0f4624, #186e3a);
         }
+
         .btn-secondary {
             background: linear-gradient(95deg, #3b5e3b, #2d6a4f);
-            width: auto;
-            padding: 0.9rem 1.5rem;
         }
+
         .button-group {
             display: flex;
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-bottom: 0.5rem;
+            margin: 1rem 2rem 0.5rem;
         }
 
-        /* Resultado con efecto 3D */
+        /* Resultado con efecto sutil */
         .result-card {
             margin: 0 2rem 2rem;
             padding: 1.5rem;
@@ -332,16 +327,14 @@
             text-align: center;
             font-size: 1.2rem;
             font-weight: 500;
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s ease;
             background: #f9faf9;
             border: 1px solid rgba(0,0,0,0.05);
             box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            transform: translateZ(0);
-            transition: transform 0.3s, box-shadow 0.3s;
         }
         .result-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.15);
         }
         .result-card.bajo { background: linear-gradient(120deg, #dcfce7, #c8f0d4); border-left: 8px solid #2e7d32; color: #1b5e20; }
         .result-card.medio { background: linear-gradient(120deg, #fef9e3, #fff3cd); border-left: 8px solid #f1c232; color: #b45f06; }
@@ -361,7 +354,7 @@
             border-top: 1px solid #cde0cd;
         }
 
-        /* Solo mantenemos la animación de entrada para la tarjeta principal */
+        /* Animación de entrada */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -373,8 +366,8 @@
         @media (max-width: 720px) {
             body { padding: 1rem; }
             .header { flex-direction: column; text-align: center; }
-            .btn-modern { width: calc(100% - 2rem); margin: 0.5rem 1rem; }
-            .button-group { flex-direction: column; align-items: center; }
+            .button-group { flex-direction: column; align-items: stretch; margin: 0.5rem 1rem; }
+            .btn-modern { margin: 0.3rem 0; justify-content: center; }
             .form-grid { padding: 1rem; gap: 1rem; }
             .result-card { margin: 1rem; }
             .help-panel { margin: 1rem; }
@@ -383,7 +376,7 @@
 </head>
 <body>
     <canvas id="particles-canvas"></canvas>
-    <div class="glass-card" id="glassCard">
+    <div class="glass-card">
         <div class="header">
             <div class="logo-area">
                 <img src="logo.png" alt="Municipalidad Pangoa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -420,7 +413,7 @@
                     <li><strong>Solicitó fraccionamiento:</strong> Si pidió pagar en cuotas.</li>
                     <li><strong>Año último pago:</strong> Último año en que realizó un pago (entre 1990 y 2100).</li>
                 </ul>
-                <p><strong>💡 Recomendación:</strong> Use el botón <strong>"Cargar ejemplo"</strong> para ver un caso típico y luego modifíquelo.</p>
+                <p><strong>💡 Recomendación:</strong> Use los botones de ejemplo para cargar casos típicos y luego modifique los valores.</p>
             </div>
         </div>
 
@@ -518,8 +511,10 @@
         </form>
 
         <div class="button-group">
-            <button id="btnPredecir" class="btn-modern"><i class="fas fa-brain"></i> Analizar contribuyente <i class="fas fa-arrow-right"></i></button>
-            <button id="btnEjemplo" class="btn-modern btn-secondary"><i class="fas fa-chalkboard-user"></i> Cargar ejemplo</button>
+            <button id="btnPredecir" class="btn-modern"><i class="fas fa-brain"></i> Analizar contribuyente</button>
+            <button id="btnEjemploAlto" class="btn-modern btn-secondary"><i class="fas fa-chart-line"></i> Ejemplo Riesgo Alto</button>
+            <button id="btnEjemploMedio" class="btn-modern btn-secondary"><i class="fas fa-chart-line"></i> Ejemplo Riesgo Medio</button>
+            <button id="btnEjemploBajo" class="btn-modern btn-secondary"><i class="fas fa-chart-line"></i> Ejemplo Riesgo Bajo</button>
         </div>
 
         <div id="resultado" class="result-card">✨ Complete los datos y presione "Analizar contribuyente"</div>
@@ -532,11 +527,11 @@
     </div>
 
     <script>
-        // ---------- PARTÍCULAS DE FONDO (más sutiles, menos cantidad) ----------
+        // ---------- PARTÍCULAS DE FONDO (sutiles) ----------
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let particleCount = 40; // reducido de 80 a 40
+        let particleCount = 50;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -582,25 +577,6 @@
         createParticles();
         drawParticles();
 
-        // ---------- EFECTO TILT 3D (solo en escritorio, evitamos en móviles por experiencia) ----------
-        const card = document.getElementById('glassCard');
-        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (!isMobile) {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateY = ((x - centerX) / centerX) * 4;   // reducido a 4 grados máx para que sea sutil
-                const rotateX = ((centerY - y) / centerY) * 4;
-                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
-            });
-        }
-
         // ---------- RIPPLE EN BOTONES ----------
         function createRipple(event, element) {
             const ripple = document.createElement('span');
@@ -614,30 +590,85 @@
             setTimeout(() => ripple.remove(), 600);
         }
 
-        const btns = document.querySelectorAll('.btn-modern');
-        btns.forEach(btn => {
+        const allBtns = document.querySelectorAll('.btn-modern');
+        allBtns.forEach(btn => {
             btn.addEventListener('click', (e) => createRipple(e, btn));
         });
 
-        // ---------- LÓGICA DE PREDICCIÓN (sin cambios) ----------
+        // ---------- LÓGICA DE PREDICCIÓN ----------
         const btnPredecir = document.getElementById('btnPredecir');
-        const btnEjemplo = document.getElementById('btnEjemplo');
+        const btnEjemploAlto = document.getElementById('btnEjemploAlto');
+        const btnEjemploMedio = document.getElementById('btnEjemploMedio');
+        const btnEjemploBajo = document.getElementById('btnEjemploBajo');
         const resultadoDiv = document.getElementById('resultado');
 
-        function cargarEjemplo() {
-            document.getElementById('tipo').value = "0";
-            document.getElementById('frecuencia').value = "1";
-            document.getElementById('montoImpuesto').value = "3500";
-            document.getElementById('montoPagado').value = "1800";
-            document.getElementById('deudaAcumulada').value = "2200";
-            document.getElementById('aniosMoroso').value = "2";
-            document.getElementById('mesesRetraso').value = "4";
-            document.getElementById('numNotificaciones').value = "3";
-            document.getElementById('respondio').value = "false";
-            document.getElementById('fraccion').value = "true";
-            document.getElementById('ultimoPago').value = "2022";
-            mostrarResultado("📋 Ejemplo cargado. Ahora presione 'Analizar contribuyente' para ver el riesgo.", "info");
-            resultadoDiv.className = "result-card";
+        // Función para cargar datos en el formulario
+        function cargarDatos(datos) {
+            document.getElementById('tipo').value = datos.tipo;
+            document.getElementById('frecuencia').value = datos.frecuencia;
+            document.getElementById('montoImpuesto').value = datos.montoImpuesto;
+            document.getElementById('montoPagado').value = datos.montoPagado;
+            document.getElementById('deudaAcumulada').value = datos.deudaAcumulada;
+            document.getElementById('aniosMoroso').value = datos.aniosMoroso;
+            document.getElementById('mesesRetraso').value = datos.mesesRetraso;
+            document.getElementById('numNotificaciones').value = datos.numNotificaciones;
+            document.getElementById('respondio').value = datos.respondio ? "true" : "false";
+            document.getElementById('fraccion').value = datos.fraccion ? "true" : "false";
+            document.getElementById('ultimoPago').value = datos.ultimoPago;
+        }
+
+        // Ejemplo Riesgo Alto
+        function cargarEjemploAlto() {
+            cargarDatos({
+                tipo: "0",                 // natural
+                frecuencia: "2",           // nunca paga
+                montoImpuesto: "8000",
+                montoPagado: "0",
+                deudaAcumulada: "15000",
+                aniosMoroso: "5",
+                mesesRetraso: "12",
+                numNotificaciones: "8",
+                respondio: false,
+                fraccion: false,
+                ultimoPago: "2018"
+            });
+            mostrarResultado("📋 Ejemplo de Riesgo Alto cargado. Presione 'Analizar contribuyente' para ver la predicción.", "info");
+        }
+
+        // Ejemplo Riesgo Medio
+        function cargarEjemploMedio() {
+            cargarDatos({
+                tipo: "0",
+                frecuencia: "1",           // con retraso
+                montoImpuesto: "3500",
+                montoPagado: "1800",
+                deudaAcumulada: "2200",
+                aniosMoroso: "2",
+                mesesRetraso: "4",
+                numNotificaciones: "3",
+                respondio: false,
+                fraccion: true,
+                ultimoPago: "2022"
+            });
+            mostrarResultado("📋 Ejemplo de Riesgo Medio cargado. Presione 'Analizar contribuyente' para ver la predicción.", "info");
+        }
+
+        // Ejemplo Riesgo Bajo
+        function cargarEjemploBajo() {
+            cargarDatos({
+                tipo: "0",
+                frecuencia: "0",           // puntual
+                montoImpuesto: "2000",
+                montoPagado: "2000",
+                deudaAcumulada: "0",
+                aniosMoroso: "0",
+                mesesRetraso: "0",
+                numNotificaciones: "0",
+                respondio: true,
+                fraccion: false,
+                ultimoPago: "2024"
+            });
+            mostrarResultado("📋 Ejemplo de Riesgo Bajo cargado. Presione 'Analizar contribuyente' para ver la predicción.", "info");
         }
 
         async function predecir() {
@@ -659,6 +690,7 @@
                 ultimoPago: parseInt(document.getElementById('ultimoPago').value)
             };
 
+            // Validaciones
             if (datos.montoPagado > datos.montoImpuesto && datos.montoImpuesto > 0) {
                 mostrarResultado("⚠️ El monto pagado no puede ser mayor al impuesto.", "error");
                 restaurarBoton(originalBtnHTML);
@@ -715,6 +747,7 @@
             btnPredecir.disabled = false;
         }
 
+        // Acordeón ayuda
         const helpHeader = document.getElementById('helpHeader');
         const helpContent = document.getElementById('helpContent');
         helpHeader.addEventListener('click', () => {
@@ -722,8 +755,11 @@
             helpHeader.classList.toggle('open');
         });
 
+        // Eventos
         btnPredecir.addEventListener('click', predecir);
-        btnEjemplo.addEventListener('click', cargarEjemplo);
+        btnEjemploAlto.addEventListener('click', cargarEjemploAlto);
+        btnEjemploMedio.addEventListener('click', cargarEjemploMedio);
+        btnEjemploBajo.addEventListener('click', cargarEjemploBajo);
     </script>
 </body>
 </html>
