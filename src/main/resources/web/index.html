@@ -2,161 +2,403 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicción Evasión Tributaria - Pangoa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pangoa Predice | Gestión de Riesgo Tributario</title>
+    <!-- Fuentes modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (iconos gratuitos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef2ee;
+        * {
             margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 750px;
-            margin: auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .header {
-            background: #14532d;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
-        .header p {
-            margin: 5px 0 0;
-            opacity: 0.9;
-        }
-        .form {
-            padding: 25px 30px;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 12px 15px;
-            align-items: center;
-        }
-        .form label {
-            font-weight: 600;
-            color: #1e3a2f;
-        }
-        .form input, .form select {
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-            width: 100%;
+            padding: 0;
             box-sizing: border-box;
         }
-        button {
-            grid-column: span 2;
-            background: #14532d;
+
+        body {
+            background: linear-gradient(135deg, #e0f0e0 0%, #c8e0c8 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal con efecto glassmorphism suave */
+        .glass-card {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        /* Header con logo y gradiente verde */
+        .header {
+            background: linear-gradient(105deg, #0e4b2c 0%, #1a6e3a 100%);
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 3px solid #ffd966;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-area img {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-area img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Si no hay logo, muestra un icono por defecto (puedes reemplazar img por este div) */
+        .logo-icon {
+            background: #f5f5dc;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #0e4b2c;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .title-text h1 {
             color: white;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.2rem;
+        }
+
+        .title-text p {
+            color: #d4ecd4;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Grid del formulario mejorada */
+        .form-grid {
+            padding: 2rem 2rem 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem 1.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #1f3b2c;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group label i {
+            color: #2d6a4f;
+            width: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 0.8rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: #fefefe;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2d6a4f;
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.2);
+        }
+
+        /* Botón principal con efecto shine */
+        .btn-modern {
+            background: linear-gradient(95deg, #14532d, #1f7a46);
             border: none;
-            padding: 12px;
+            color: white;
+            font-weight: 700;
             font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 40px;
+            padding: 0.9rem;
+            border-radius: 2rem;
             cursor: pointer;
-            margin-top: 15px;
-            transition: background 0.2s;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            letter-spacing: 0.5px;
+            margin: 0.5rem 2rem 1rem;
+            width: calc(100% - 4rem);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
         }
-        button:hover {
-            background: #0f3b21;
+
+        .btn-modern::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.2);
+            transform: rotate(25deg);
+            transition: all 0.5s;
         }
-        .result {
-            margin: 20px 30px 30px;
-            padding: 20px;
-            border-radius: 16px;
+
+        .btn-modern:hover::after {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(95deg, #0f4624, #186e3a);
+        }
+
+        /* Loader animado */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tarjeta de resultado con glassmorphism */
+        .result-card {
+            margin: 0 2rem 2rem;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
             text-align: center;
             font-size: 1.2rem;
-            border: 2px solid #ddd;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            background: #f9faf9;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
-        .error {
-            background: #ffe6e6;
-            color: #b30000;
+
+        .result-card.bajo {
+            background: linear-gradient(120deg, #dcfce7, #c8f0d4);
+            border-left: 8px solid #2e7d32;
+            color: #1b5e20;
         }
-        .bajo { background: #dcfce7; color: #14532d; border-color: #86efac; }
-        .medio { background: #fef3c7; color: #854d0e; border-color: #fcd34d; }
-        .alto { background: #fee2e2; color: #991b1b; border-color: #f87171; }
-        footer {
+        .result-card.medio {
+            background: linear-gradient(120deg, #fef9e3, #fff3cd);
+            border-left: 8px solid #f1c232;
+            color: #b45f06;
+        }
+        .result-card.alto {
+            background: linear-gradient(120deg, #ffe6e6, #ffd6d6);
+            border-left: 8px solid #c5221f;
+            color: #9b2222;
+        }
+        .result-card.error {
+            background: #fff0f0;
+            border-left: 8px solid #d32f2f;
+            color: #b71c1c;
+        }
+
+        /* Footer mejorado */
+        .footer {
+            background: #eaf4ea;
+            padding: 1rem;
             text-align: center;
             font-size: 0.8rem;
-            padding: 15px;
-            background: #f0f2f0;
-            color: #4a5b4a;
+            color: #2c5e3c;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            border-top: 1px solid #cde0cd;
         }
-        @media (max-width: 600px) {
-            .form { grid-template-columns: 1fr; gap: 8px; }
-            button { grid-column: span 1; }
+
+        /* Animación de entrada */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-card, .result-card {
+            animation: fadeUp 0.5s ease-out;
+        }
+
+        /* responsive */
+        @media (max-width: 720px) {
+            body {
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .btn-modern {
+                width: calc(100% - 2rem);
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .form-grid {
+                padding: 1.5rem;
+                gap: 1rem;
+            }
+            .result-card {
+                margin: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="glass-card">
+    <!-- Header con logo -->
     <div class="header">
-        <h1>🔍 Predicción de evasión tributaria</h1>
-        <p>Municipalidad Distrital de Pangoa · Subgerencia de Rentas</p>
+        <div class="logo-area">
+            <!-- CAMBIA AQUÍ: si tienes un archivo logo.png dentro de la carpeta web, descomenta la línea img y comenta el div .logo-icon -->
+            <!-- <img src="logo.png" alt="Municipalidad Pangoa"> -->
+            <div class="logo-icon">
+                <i class="fas fa-tree"></i>
+            </div>
+            <div class="title-text">
+                <h1>Pangoa Predice</h1>
+                <p>Sistema de Gestión de Riesgo Tributario</p>
+            </div>
+        </div>
+        <div style="color:#e8f0e8; font-size:0.85rem;">
+            <i class="fas fa-chart-line"></i> ML · Weka
+        </div>
     </div>
-    <div class="form">
-        <label>Tipo contribuyente:</label>
-        <select id="tipo">
-            <option value="0">Persona natural</option>
-            <option value="1">Persona jurídica</option>
-        </select>
 
-        <label>Frecuencia de pago:</label>
-        <select id="frecuencia">
-            <option value="0">Puntual</option>
-            <option value="1">Con retraso</option>
-            <option value="2">Nunca paga</option>
-        </select>
-
-        <label>Monto impuesto (S/):</label>
-        <input type="number" step="any" id="montoImpuesto" value="1000">
-
-        <label>Monto pagado (S/):</label>
-        <input type="number" step="any" id="montoPagado" value="0">
-
-        <label>Deuda acumulada (S/):</label>
-        <input type="number" step="any" id="deudaAcumulada" value="0">
-
-        <label>Años en morosidad:</label>
-        <input type="number" id="aniosMoroso" value="0">
-
-        <label>Meses retraso promedio:</label>
-        <input type="number" step="any" id="mesesRetraso" value="0">
-
-        <label>N° notificaciones:</label>
-        <input type="number" id="numNotificaciones" value="0">
-
-        <label>Respondió notificaciones:</label>
-        <select id="respondio">
-            <option value="true">Sí</option>
-            <option value="false">No</option>
-        </select>
-
-        <label>Solicitó fraccionamiento:</label>
-        <select id="fraccion">
-            <option value="true">Sí</option>
-            <option value="false">No</option>
-        </select>
-
-        <label>Año último pago:</label>
-        <input type="number" id="ultimoPago" value="2024">
-
-        <button id="btnPredecir">📊 Analizar contribuyente</button>
+    <!-- Formulario en grid mejorado -->
+    <div class="form-grid">
+        <div class="input-group">
+            <label><i class="fas fa-user"></i> Tipo contribuyente</label>
+            <select id="tipo">
+                <option value="0">Persona natural</option>
+                <option value="1">Persona jurídica</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-calendar-alt"></i> Frecuencia de pago</label>
+            <select id="frecuencia">
+                <option value="0">Puntual</option>
+                <option value="1">Con retraso</option>
+                <option value="2">Nunca paga</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-money-bill-wave"></i> Monto impuesto (S/)</label>
+            <input type="number" step="any" id="montoImpuesto" value="1000">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-hand-holding-usd"></i> Monto pagado (S/)</label>
+            <input type="number" step="any" id="montoPagado" value="0">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-chart-simple"></i> Deuda acumulada (S/)</label>
+            <input type="number" step="any" id="deudaAcumulada" value="0">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-hourglass-half"></i> Años en morosidad</label>
+            <input type="number" id="aniosMoroso" value="0">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-clock"></i> Meses retraso promedio</label>
+            <input type="number" step="any" id="mesesRetraso" value="0">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-envelope"></i> N° notificaciones</label>
+            <input type="number" id="numNotificaciones" value="0">
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-reply-all"></i> Respondió notificaciones</label>
+            <select id="respondio">
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-file-signature"></i> Solicitó fraccionamiento</label>
+            <select id="fraccion">
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label><i class="fas fa-calendar-week"></i> Año último pago</label>
+            <input type="number" id="ultimoPago" value="2024">
+        </div>
     </div>
-    <div id="resultado" class="result">Esperando datos...</div>
-    <footer>Modelo de Machine Learning · Weka · Riesgo Bajo/Medio/Alto</footer>
+
+    <!-- Botón con efecto moderno -->
+    <button id="btnPredecir" class="btn-modern">
+        <i class="fas fa-brain"></i> Analizar contribuyente
+        <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <!-- Área de resultado animada -->
+    <div id="resultado" class="result-card">✨ Ingrese los datos y presione analizar</div>
+
+    <div class="footer">
+        <span><i class="fas fa-microchip"></i> Modelo Weka · Random Forest</span>
+        <span><i class="fas fa-chart-pie"></i> Riesgo Bajo / Medio / Alto</span>
+        <span><i class="fas fa-shield-alt"></i> Datos anonimizados</span>
+    </div>
 </div>
 
 <script>
-    document.getElementById('btnPredecir').addEventListener('click', async () => {
+    // Referencias
+    const btn = document.getElementById('btnPredecir');
+    const resultadoDiv = document.getElementById('resultado');
+
+    // Función para mostrar loader mientras se espera respuesta
+    async function predecir() {
+        // Bloquear botón y mostrar loader
+        const originalBtnHTML = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Procesando modelo...';
+        btn.disabled = true;
+
+        // Obtener datos igual que antes
         const datos = {
             tipoContribuyente: parseInt(document.getElementById('tipo').value),
             frecuenciaPago: parseInt(document.getElementById('frecuencia').value),
@@ -171,13 +413,15 @@
             ultimoPago: parseInt(document.getElementById('ultimoPago').value)
         };
 
-        // Validación simple igual que la versión original
+        // Validaciones (igual que original)
         if (datos.montoPagado > datos.montoImpuesto && datos.montoImpuesto > 0) {
-            mostrarResultado("El monto pagado no puede ser mayor al impuesto.", "error");
+            mostrarResultado("⚠️ El monto pagado no puede ser mayor al impuesto.", "error");
+            restaurarBoton(originalBtnHTML);
             return;
         }
         if (datos.ultimoPago < 1990 || datos.ultimoPago > 2100) {
-            mostrarResultado("Año del último pago debe estar entre 1990 y 2100.", "error");
+            mostrarResultado("📅 Año del último pago debe estar entre 1990 y 2100.", "error");
+            restaurarBoton(originalBtnHTML);
             return;
         }
 
@@ -197,26 +441,35 @@
             let mensaje = '';
             if (prediccion === 'Bajo') {
                 claseCss = 'bajo';
-                mensaje = '<strong>✅ Riesgo Bajo</strong><br>Comportamiento regular de pago.<br>Acción: Seguimiento rutinario.';
+                mensaje = '<i class="fas fa-check-circle" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i><strong style="font-size:1.3rem;">✅ Riesgo Bajo</strong><br>Comportamiento regular de pago.<br><span style="font-size:0.9rem;">Acción: Seguimiento rutinario.</span>';
             } else if (prediccion === 'Medio') {
                 claseCss = 'medio';
-                mensaje = '<strong>⚠️ Riesgo Medio</strong><br>Pagos irregulares con deuda moderada.<br>Acción: Notificar y ofrecer fraccionamiento.';
+                mensaje = '<i class="fas fa-exclamation-triangle" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i><strong style="font-size:1.3rem;">⚠️ Riesgo Medio</strong><br>Pagos irregulares con deuda moderada.<br><span style="font-size:0.9rem;">Acción: Notificar y ofrecer fraccionamiento.</span>';
             } else {
                 claseCss = 'alto';
-                mensaje = '<strong>🔴 Riesgo Alto</strong><br>Incumplimiento reiterado.<br>Acción: Iniciar cobranza coactiva.';
+                mensaje = '<i class="fas fa-skull-crossbones" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i><strong style="font-size:1.3rem;">🔴 Riesgo Alto</strong><br>Incumplimiento reiterado.<br><span style="font-size:0.9rem;">Acción: Iniciar cobranza coactiva.</span>';
             }
-            document.getElementById('resultado').innerHTML = mensaje;
-            document.getElementById('resultado').className = `result ${claseCss}`;
+            resultadoDiv.innerHTML = mensaje;
+            resultadoDiv.className = `result-card ${claseCss}`;
         } catch (error) {
-            mostrarResultado("Error: " + error.message, "error");
+            mostrarResultado("❌ Error: " + error.message, "error");
+        } finally {
+            restaurarBoton(originalBtnHTML);
         }
-    });
+    }
 
     function mostrarResultado(texto, tipo) {
-        const div = document.getElementById('resultado');
-        div.innerHTML = texto;
-        div.className = `result ${tipo === 'error' ? 'error' : ''}`;
+        resultadoDiv.innerHTML = texto;
+        resultadoDiv.className = `result-card ${tipo === 'error' ? 'error' : ''}`;
     }
+
+    function restaurarBoton(originalHTML) {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    }
+
+    // Evento principal
+    btn.addEventListener('click', predecir);
 </script>
 </body>
 </html>
