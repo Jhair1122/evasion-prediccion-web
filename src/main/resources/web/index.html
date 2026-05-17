@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pangoa Predice | Gestión de Riesgo Tributario 3D</title>
+    <title>Pangoa Predice | Gestión de Riesgo Tributario</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -13,7 +13,7 @@
             box-sizing: border-box;
         }
 
-        /* Canvas de partículas de fondo */
+        /* Canvas de partículas de fondo (más sutil) */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -28,7 +28,7 @@
             font-family: 'Inter', sans-serif;
             padding: 2rem 1.5rem;
             min-height: 100vh;
-            perspective: 1200px; /* Para efecto 3D */
+            perspective: 1200px;
         }
 
         /* Contenedor principal con efecto 3D tilt */
@@ -46,12 +46,10 @@
             will-change: transform;
         }
 
-        /* Efecto de elevación al pasar el mouse */
         .glass-card:hover {
             box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.4);
         }
 
-        /* Header igual que antes pero con sombra interior */
         .header {
             background: linear-gradient(105deg, #0e4b2c 0%, #1a6e3a 100%);
             padding: 1.2rem 2rem;
@@ -157,7 +155,6 @@
             margin: 0.5rem 0;
         }
 
-        /* Formulario grid */
         .form-grid {
             padding: 1.5rem 2rem 0.5rem;
             display: grid;
@@ -165,35 +162,12 @@
             gap: 1.2rem 1.8rem;
         }
 
-        /* Cada input-group tendrá animación de entrada escalonada */
+        /* Sin animación de entrada, solo transiciones suaves en hover/focus */
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
             position: relative;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.4s forwards;
-        }
-
-        /* Retrasos para cada campo (stagger) */
-        .input-group:nth-child(1) { animation-delay: 0.05s; }
-        .input-group:nth-child(2) { animation-delay: 0.10s; }
-        .input-group:nth-child(3) { animation-delay: 0.15s; }
-        .input-group:nth-child(4) { animation-delay: 0.20s; }
-        .input-group:nth-child(5) { animation-delay: 0.25s; }
-        .input-group:nth-child(6) { animation-delay: 0.30s; }
-        .input-group:nth-child(7) { animation-delay: 0.35s; }
-        .input-group:nth-child(8) { animation-delay: 0.40s; }
-        .input-group:nth-child(9) { animation-delay: 0.45s; }
-        .input-group:nth-child(10) { animation-delay: 0.50s; }
-        .input-group:nth-child(11) { animation-delay: 0.55s; }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .label-wrapper {
@@ -302,7 +276,6 @@
             transform: translateY(0);
         }
 
-        /* Efecto ripple */
         .btn-modern .ripple {
             position: absolute;
             border-radius: 50%;
@@ -388,11 +361,12 @@
             border-top: 1px solid #cde0cd;
         }
 
+        /* Solo mantenemos la animación de entrada para la tarjeta principal */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .glass-card, .result-card {
+        .glass-card {
             animation: fadeUp 0.5s ease-out;
         }
 
@@ -558,11 +532,11 @@
     </div>
 
     <script>
-        // ---------- PARTÍCULAS DE FONDO (Canvas) ----------
+        // ---------- PARTÍCULAS DE FONDO (más sutiles, menos cantidad) ----------
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let particleCount = 80;
+        let particleCount = 40; // reducido de 80 a 40
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -575,11 +549,10 @@
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    alpha: Math.random() * 0.5 + 0.2,
-                    speedX: (Math.random() - 0.5) * 0.5,
-                    speedY: (Math.random() - 0.5) * 0.3,
-                    color: `rgba(45, 106, 79, ${Math.random() * 0.5 + 0.2})`
+                    radius: Math.random() * 2 + 1,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: (Math.random() - 0.5) * 0.2,
+                    color: `rgba(45, 106, 79, ${Math.random() * 0.4 + 0.1})`
                 });
             }
         }
@@ -609,21 +582,24 @@
         createParticles();
         drawParticles();
 
-        // ---------- EFECTO TILT 3D EN LA TARJETA ----------
+        // ---------- EFECTO TILT 3D (solo en escritorio, evitamos en móviles por experiencia) ----------
         const card = document.getElementById('glassCard');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateY = ((x - centerX) / centerX) * 5;   // máx 5 grados
-            const rotateX = ((centerY - y) / centerY) * 5;
-            card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
-        });
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (!isMobile) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateY = ((x - centerX) / centerX) * 4;   // reducido a 4 grados máx para que sea sutil
+                const rotateX = ((centerY - y) / centerY) * 4;
+                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+            });
+        }
 
         // ---------- RIPPLE EN BOTONES ----------
         function createRipple(event, element) {
@@ -643,7 +619,7 @@
             btn.addEventListener('click', (e) => createRipple(e, btn));
         });
 
-        // ---------- LÓGICA DE PREDICCIÓN (igual que antes, con mejoras) ----------
+        // ---------- LÓGICA DE PREDICCIÓN (sin cambios) ----------
         const btnPredecir = document.getElementById('btnPredecir');
         const btnEjemplo = document.getElementById('btnEjemplo');
         const resultadoDiv = document.getElementById('resultado');
@@ -739,7 +715,6 @@
             btnPredecir.disabled = false;
         }
 
-        // Acordeón ayuda
         const helpHeader = document.getElementById('helpHeader');
         const helpContent = document.getElementById('helpContent');
         helpHeader.addEventListener('click', () => {
