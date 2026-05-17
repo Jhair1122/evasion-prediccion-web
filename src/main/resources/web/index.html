@@ -638,17 +638,17 @@
         // Ejemplo Riesgo Medio
         function cargarEjemploMedio() {
             cargarDatos({
-                tipo: "0",
-                frecuencia: "1",           // con retraso
-                montoImpuesto: "3500",
-                montoPagado: "1800",
-                deudaAcumulada: "2200",
-                aniosMoroso: "2",
-                mesesRetraso: "4",
-                numNotificaciones: "3",
-                respondio: false,
-                fraccion: true,
-                ultimoPago: "2022"
+                tipo: "0",                 // Persona natural
+                frecuencia: "1",           // Con retraso
+                montoImpuesto: "1000",
+                montoPagado: "0",
+                deudaAcumulada: "100",
+                aniosMoroso: "0",          // asumiendo 0 años
+                mesesRetraso: "1",
+                numNotificaciones: "1",
+                respondio: true,           // Sí
+                fraccion: true,            // Sí
+                ultimoPago: "2025"
             });
             mostrarResultado("📋 Ejemplo de Riesgo Medio cargado. Presione 'Analizar contribuyente' para ver la predicción.", "info");
         }
