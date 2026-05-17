@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción Evasión Tributaria - Pangoa</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #eef2ee;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #14532d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .header p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+        }
+        .form {
+            padding: 25px 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 12px 15px;
+            align-items: center;
+        }
+        .form label {
+            font-weight: 600;
+            color: #1e3a2f;
+        }
+        .form input, .form select {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            grid-column: span 2;
+            background: #14532d;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #0f3b21;
+        }
+        .result {
+            margin: 20px 30px 30px;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+        }
+        .error {
+            background: #ffe6e6;
+            color: #b30000;
+        }
+        .bajo { background: #dcfce7; color: #14532d; border-color: #86efac; }
+        .medio { background: #fef3c7; color: #854d0e; border-color: #fcd34d; }
+        .alto { background: #fee2e2; color: #991b1b; border-color: #f87171; }
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 15px;
+            background: #f0f2f0;
+            color: #4a5b4a;
+        }
+        @media (max-width: 600px) {
+            .form { grid-template-columns: 1fr; gap: 8px; }
+            button { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🔍 Predicción de evasión tributaria</h1>
+        <p>Municipalidad Distrital de Pangoa · Subgerencia de Rentas</p>
+    </div>
+    <div class="form">
+        <label>Tipo contribuyente:</label>
+        <select id="tipo">
+            <option value="0">Persona natural</option>
+            <option value="1">Persona jurídica</option>
+        </select>
+
+        <label>Frecuencia de pago:</label>
+        <select id="frecuencia">
+            <option value="0">Puntual</option>
+            <option value="1">Con retraso</option>
+            <option value="2">Nunca paga</option>
+        </select>
+
+        <label>Monto impuesto (S/):</label>
+        <input type="number" step="any" id="montoImpuesto" value="1000">
+
+        <label>Monto pagado (S/):</label>
+        <input type="number" step="any" id="montoPagado" value="0">
+
+        <label>Deuda acumulada (S/):</label>
+        <input type="number" step="any" id="deudaAcumulada" value="0">
+
+        <label>Años en morosidad:</label>
+        <input type="number" id="aniosMoroso" value="0">
+
+        <label>Meses retraso promedio:</label>
+        <input type="number" step="any" id="mesesRetraso" value="0">
+
+        <label>N° notificaciones:</label>
+        <input type="number" id="numNotificaciones" value="0">
+
+        <label>Respondió notificaciones:</label>
+        <select id="respondio">
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+        </select>
+
+        <label>Solicitó fraccionamiento:</label>
+        <select id="fraccion">
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+        </select>
+
+        <label>Año último pago:</label>
+        <input type="number" id="ultimoPago" value="2024">
+
+        <button id="btnPredecir">📊 Analizar contribuyente</button>
+    </div>
+    <div id="resultado" class="result">Esperando datos...</div>
+    <footer>Modelo de Machine Learning · Weka · Riesgo Bajo/Medio/Alto</footer>
+</div>
+
+<script>
+    document.getElementById('btnPredecir').addEventListener('click', async () => {
+        const datos = {
+            tipoContribuyente: parseInt(document.getElementById('tipo').value),
+            frecuenciaPago: parseInt(document.getElementById('frecuencia').value),
+            montoImpuesto: parseFloat(document.getElementById('montoImpuesto').value),
+            montoPagado: parseFloat(document.getElementById('montoPagado').value),
+            deudaAcumulada: parseFloat(document.getElementById('deudaAcumulada').value),
+            aniosMoroso: parseInt(document.getElementById('aniosMoroso').value),
+            mesesRetrasoPromedio: parseFloat(document.getElementById('mesesRetraso').value),
+            numNotificaciones: parseInt(document.getElementById('numNotificaciones').value),
+            respondioNotificacion: document.getElementById('respondio').value === 'true',
+            fraccionamiento: document.getElementById('fraccion').value === 'true',
+            ultimoPago: parseInt(document.getElementById('ultimoPago').value)
+        };
+
+        // Validación simple igual que la versión original
+        if (datos.montoPagado > datos.montoImpuesto && datos.montoImpuesto > 0) {
+            mostrarResultado("El monto pagado no puede ser mayor al impuesto.", "error");
+            return;
+        }
+        if (datos.ultimoPago < 1990 || datos.ultimoPago > 2100) {
+            mostrarResultado("Año del último pago debe estar entre 1990 y 2100.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch('/predecir', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || "Error en el servidor");
+            }
+            const result = await response.json();
+            const prediccion = result.prediccion;
+            let claseCss = '';
+            let mensaje = '';
+            if (prediccion === 'Bajo') {
+                claseCss = 'bajo';
+                mensaje = '<strong>✅ Riesgo Bajo</strong><br>Comportamiento regular de pago.<br>Acción: Seguimiento rutinario.';
+            } else if (prediccion === 'Medio') {
+                claseCss = 'medio';
+                mensaje = '<strong>⚠️ Riesgo Medio</strong><br>Pagos irregulares con deuda moderada.<br>Acción: Notificar y ofrecer fraccionamiento.';
+            } else {
+                claseCss = 'alto';
+                mensaje = '<strong>🔴 Riesgo Alto</strong><br>Incumplimiento reiterado.<br>Acción: Iniciar cobranza coactiva.';
+            }
+            document.getElementById('resultado').innerHTML = mensaje;
+            document.getElementById('resultado').className = `result ${claseCss}`;
+        } catch (error) {
+            mostrarResultado("Error: " + error.message, "error");
+        }
+    });
+
+    function mostrarResultado(texto, tipo) {
+        const div = document.getElementById('resultado');
+        div.innerHTML = texto;
+        div.className = `result ${tipo === 'error' ? 'error' : ''}`;
+    }
+</script>
+</body>
+</html>
